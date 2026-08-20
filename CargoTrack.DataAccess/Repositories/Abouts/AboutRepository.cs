@@ -8,6 +8,7 @@ namespace CargoTrack.DataAccess.Repositories.Abouts
 	{
 		public AboutRepository(AppDbContext context) : base(context)
 		{
+
 		}
 	}
 }

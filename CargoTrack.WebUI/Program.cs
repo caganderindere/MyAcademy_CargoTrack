@@ -1,8 +1,33 @@
+using CargoTrack.Business.Services.Abouts;
+using CargoTrack.Business.Services.Branches;
+using CargoTrack.Business.Validators;
 using CargoTrack.DataAccess.Context;
+using CargoTrack.DataAccess.Repositories.Abouts;
+using CargoTrack.DataAccess.Repositories.Branches;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//IOC Container
+
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssembly(typeof(BussinesAssembly).Assembly);
+
+builder.Services.AddScoped<IAboutRepository, AboutRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+
+builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+	{      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+	});
+
 
 //builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddControllersWithViews();
